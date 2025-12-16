@@ -8,14 +8,13 @@ RUN npm install
 
 COPY . .
 
-# ENV DOCKERIZE_VERSION v0.9.9
+ENV DOCKERIZE_VERSION v0.9.9
 
-# RUN apt-get update \
-#     && apt-get install -y wget \
-#     && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
-#     && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/*
-
+RUN apk update --no-cache \
+    && apk add --no-cache wget openssl \
+    && wget -O - https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz | tar xzf - -C /usr/local/bin \
+    && apk del wget
 
 EXPOSE 3000
 
-CMD ["node","index.js"]
+# CMD ["node","index.js"]
